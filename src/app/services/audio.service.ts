@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Speaker } from '../models/speaker.model';
-import { ApiService, SeparatedFile } from './api.service';
+import { ApiService, ResultFileResponse } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AudioService {
           id: index + 1,
           filename: file.filename,
           displayName: `Locuteur ${index + 1}`,
-          url: file.url,
+          url: file.url,  // URL directe du backend /result/filename
           isPlaying: false,
           color: this.colors[index % this.colors.length],
           volume: 1,
@@ -31,7 +31,11 @@ export class AudioService {
         }));
         this.speakers.next(speakers);
       },
-      error: (err) => console.error('Erreur chargement:', err)
+      error: (err) => {
+        console.error('Erreur chargement:', err);
+        // Si erreur, mettre liste vide pour afficher "Aucun fichier"
+        this.speakers.next([]);
+      }
     });
   }
 

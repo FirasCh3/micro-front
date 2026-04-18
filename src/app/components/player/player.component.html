@@ -9,7 +9,7 @@
   <!-- BOUTON CHARGER -->
   <div class="controls-bar">
     <button (click)="load()" [disabled]="isLoading" class="btn-refresh">
-      {{ isLoading ? '⏳ Chargement...' : '🔄 Charger depuis le Cloud' }}
+      {{ isLoading ? '⏳ Chargement...' : '🔄 Charger les résultats' }}
     </button>
     <span class="badge" *ngIf="speakers.length > 0">
       {{ speakers.length }} locuteur(s)
@@ -40,14 +40,14 @@
         </button>
       </div>
 
-      <!-- VISUALISATION SIMPLE (CSS) -->
+      <!-- VISUALISATION -->
       <div class="visualizer" *ngIf="speaker.isPlaying">
         <div class="bar" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" 
              [style.animation-delay]="(i * 0.1) + 's'">
         </div>
       </div>
 
-      <!-- BARRE DE PROGRESSION -->
+      <!-- PROGRESSION -->
       <div class="progress-section">
         <span class="time">{{ formatTime(speaker.currentTime) }}</span>
         

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   speakers: Speaker[] = [];
-  isLoading = true;
+  isLoading = false;  // Commencer à false
   private sub!: Subscription;
 
   constructor(private audioService: AudioService) {}
@@ -24,7 +24,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.speakers = speakers;
       this.isLoading = false;
     });
-    this.load();
+    // Ne pas charger automatiquement, attendre clic bouton
   }
 
   load(): void {
