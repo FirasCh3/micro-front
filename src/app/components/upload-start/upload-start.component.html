@@ -1,0 +1,36 @@
+<div class="start-container">
+  <div class="header">
+    <h1>Cocktail Party Problem</h1>
+    <p>Original uploaded audio</p>
+  </div>
+
+  <div class="controls-bar">
+    <a routerLink="/voices" class="btn-separate">
+      Separate voices
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="empty">
+    <div class="big-icon">Loading</div>
+    <p>Finding uploaded WAV file...</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="empty">
+    <div class="big-icon">No audio</div>
+    <p>{{ errorMessage }}</p>
+    <small>Check that the backend uploads folder contains a WAV file.</small>
+  </div>
+
+  <div *ngIf="!isLoading && uploadFile" class="upload-card">
+    <div class="upload-header">
+      <div class="avatar">WAV</div>
+
+      <div class="details">
+        <h3>Uploaded file</h3>
+        <span class="filename">{{ uploadFile.filename }}</span>
+      </div>
+    </div>
+
+    <audio [src]="uploadFile.url" controls preload="metadata"></audio>
+  </div>
+</div>

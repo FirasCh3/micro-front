@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface ResultFileResponse {
+export interface AudioFileResponse {
   filename: string;
   url: string;
 }
+
+export type ResultFileResponse = AudioFileResponse;
+export type UploadFileResponse = AudioFileResponse;
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,10 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupère la liste des fichiers séparés (endpoint /result du backend)
+  getLatestUpload(): Observable<UploadFileResponse> {
+    return this.http.get<UploadFileResponse>(`${this.apiUrl}/upload/latest`);
+  }
+
   getSeparatedFiles(): Observable<ResultFileResponse[]> {
     return this.http.get<ResultFileResponse[]>(`${this.apiUrl}/result`);
   }

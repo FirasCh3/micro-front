@@ -1,98 +1,93 @@
 <div class="player-container">
-  
-  <!-- HEADER -->
   <div class="header">
-    <h1>🍸 Cocktail Party Problem</h1>
-    <p>Séparation de voix - Visualisation</p>
+    <a routerLink="/" class="back-link">Back to uploaded WAV</a>
+    <h1>Cocktail Party Problem</h1>
+    <p>Separated voice results</p>
   </div>
 
-  <!-- BOUTON CHARGER -->
   <div class="controls-bar">
     <button (click)="load()" [disabled]="isLoading" class="btn-refresh">
-      {{ isLoading ? '⏳ Chargement...' : '🔄 Charger les résultats' }}
+      {{ isLoading ? 'Loading...' : 'Reload results' }}
     </button>
     <span class="badge" *ngIf="speakers.length > 0">
-      {{ speakers.length }} locuteur(s)
+      {{ speakers.length }} voice(s)
     </span>
   </div>
 
-  <!-- LISTE DES LOCUTEURS -->
   <div class="speakers-list" *ngIf="speakers.length > 0">
-    
-    <div *ngFor="let speaker of speakers" 
-         class="speaker-card"
-         [class.playing]="speaker.isPlaying"
-         [style.--color]="speaker.color">
-      
-      <!-- INFO LOCUTEUR -->
+    <div
+      *ngFor="let speaker of speakers"
+      class="speaker-card"
+      [class.playing]="speaker.isPlaying"
+      [style.--color]="speaker.color"
+    >
       <div class="speaker-header">
         <div class="avatar" [style.background]="speaker.color">
-          {{ speaker.displayName.charAt(speaker.displayName.length - 1) }}
+          {{ speaker.id }}
         </div>
-        
+
         <div class="details">
           <h3>{{ speaker.displayName }}</h3>
           <span class="filename">{{ speaker.filename }}</span>
         </div>
 
         <button (click)="togglePlay(speaker)" class="btn-play">
-          {{ speaker.isPlaying ? '⏸' : '▶' }}
+          {{ speaker.isPlaying ? 'Pause' : 'Play' }}
         </button>
       </div>
 
-      <!-- VISUALISATION -->
       <div class="visualizer" *ngIf="speaker.isPlaying">
-        <div class="bar" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" 
-             [style.animation-delay]="(i * 0.1) + 's'">
-        </div>
+        <div
+          class="bar"
+          *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"
+          [style.animation-delay]="(i * 0.1) + 's'"
+        ></div>
       </div>
 
-      <!-- PROGRESSION -->
       <div class="progress-section">
         <span class="time">{{ formatTime(speaker.currentTime) }}</span>
-        
+
         <div class="progress-wrapper">
-          <input type="range" 
-                 min="0" 
-                 max="100" 
-                 step="0.1"
-                 [value]="speaker.progress"
-                 (input)="onSeek(speaker, $event)"
-                 class="seek-slider">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            step="0.1"
+            [value]="speaker.progress"
+            (input)="onSeek(speaker, $event)"
+            class="seek-slider"
+          >
           <div class="progress-track">
             <div class="progress-fill" [style.width.%]="speaker.progress"></div>
           </div>
         </div>
-        
+
         <span class="time">{{ formatTime(speaker.duration) }}</span>
       </div>
 
-      <!-- VOLUME -->
       <div class="volume-section">
-        <span class="vol-icon">🔊</span>
-        <input type="range" 
-               min="0" 
-               max="1" 
-               step="0.01"
-               [value]="speaker.volume"
-               (input)="onVolumeChange(speaker, $event)"
-               class="volume-slider">
+        <span class="vol-icon">Volume</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="speaker.volume"
+          (input)="onVolumeChange(speaker, $event)"
+          class="volume-slider"
+        >
         <span class="vol-value">{{ (speaker.volume * 100) | number:'1.0-0' }}%</span>
       </div>
-
     </div>
   </div>
 
-  <!-- STOP ALL -->
   <button *ngIf="speakers.length > 0" (click)="stopAll()" class="btn-stop-all">
-    ⏹ Arrêter tout
+    Stop all
   </button>
 
-  <!-- EMPTY STATE -->
   <div *ngIf="speakers.length === 0 && !isLoading" class="empty">
-    <div class="big-icon">☁️</div>
-    <p>Aucun fichier disponible</p>
-    <small>Clique sur "Charger" pour récupérer les fichiers séparés</small>
+    <div class="big-icon">No audio</div>
+    <p>No separated files available</p>
+    <small>Check that the backend result folder contains the separated voices.</small>
   </div>
-
 </div>

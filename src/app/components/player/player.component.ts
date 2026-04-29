@@ -1,20 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AudioService } from '../../services/audio.service';
 import { Speaker } from '../../models/speaker.model';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   speakers: Speaker[] = [];
-  isLoading = false;  // Commencer à false
+  isLoading = false;
   private sub!: Subscription;
 
   constructor(private audioService: AudioService) {}
@@ -24,7 +25,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.speakers = speakers;
       this.isLoading = false;
     });
-    // Ne pas charger automatiquement, attendre clic bouton
+
+    this.load();
   }
 
   load(): void {
@@ -52,6 +54,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   formatTime(seconds: number): string {
     if (!seconds || isNaN(seconds)) return '0:00';
+
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
